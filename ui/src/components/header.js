@@ -1,4 +1,5 @@
 import React from "react"
+import { LoginButton } from "./authButton"
 
 export function Header() {
     return (
@@ -24,7 +25,7 @@ export function Header() {
           <div className="p-0 dropdown">
             <img src="./account.svg" data-bs-toggle="dropdown" role="button" className="dropdown-toggle" height="35" width="35" alt="account"/>
             <ul className="px-2 py-1 dropdown-menu dropdown-menu-end">
-              <li className="mb-2"><a href="/login" className="btn btn-primary w-100">Login</a></li>
+              <li className="mb-2"><LoginButton/></li>
               <li className="mb-2"><a href="/signup " className="btn btn-secondary w-100">Sign up</a></li>
             </ul>
           </div>

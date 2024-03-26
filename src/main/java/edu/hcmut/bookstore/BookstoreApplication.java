@@ -1,13 +1,18 @@
 package edu.hcmut.bookstore;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import edu.hcmut.bookstore.controllers.AuthController;
+import edu.hcmut.bookstore.controllers.BookController;
+import edu.hcmut.bookstore.db.DbManager;
+import io.javalin.Javalin;
 
-@SpringBootApplication
 public class BookstoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BookstoreApplication.class, args);
-	}
+	public static void main(String[] args) throws Exception {
+		DbManager.getIgniteNode();
+		var app = Javalin.create(cfg -> {
+				}).get("/test", BookController::getBook)
+						.post("/login", AuthController::login);
 
+		app.start(8080);
+	}
 }
