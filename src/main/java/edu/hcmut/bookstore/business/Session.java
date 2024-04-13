@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Session {
     public final String id;
     public final LocalDateTime timeCreated;
-    public final int userId;
+    public final long userId;
 
     private static String generateSessionId(String data) {
         try {
@@ -32,13 +32,13 @@ public class Session {
         }
     }
 
-    Session(String id, LocalDateTime datetime, int userId) {
+    Session(String id, LocalDateTime datetime, long userId) {
         this.id = id;
         this.timeCreated = datetime;
         this.userId = userId;
     }
 
-    public static Session newSession(int userId) {
+    public static Session newSession(long userId) {
         var datetime = LocalDateTime.now();
         return new Session(generateSessionId(UUID.randomUUID().toString()), datetime, userId);
     }
