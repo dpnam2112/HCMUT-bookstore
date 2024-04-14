@@ -6,18 +6,17 @@ import edu.hcmut.bookstore.db.DbManager;
 import io.javalin.Javalin;
 
 public class BookstoreApplication {
+		public static void main(String[] args) throws Exception {
+			DbManager.getIgniteNode();
 
-	public static void main(String[] args) throws Exception {
-		DbManager.getIgniteNode();
-
-		var app = Javalin.create(cfg -> {
+			var app = Javalin.create(cfg -> {
 					cfg.bundledPlugins.enableCors(cors -> {
-						cors.addRule(it -> {
-							it.allowHost("http://localhost:3000");
-							it.allowCredentials = true;
-						});
-					});
-				})
+				cors.addRule(it -> {
+					it.allowHost("http://localhost:3000");
+					it.allowCredentials = true;
+				});
+			});
+		})
 				.get("/test", BookController::getBook)
 				.post("/api/login", AuthController::login)
 				.get("/api/books", BookController::getBooks);
@@ -25,4 +24,5 @@ public class BookstoreApplication {
 
 		app.start(8080);
 	}
+
 }

@@ -65,7 +65,7 @@ public class BookRepository {
                 prepStmt.setInt(3, count);
             } else {
                 StringBuilder query = new StringBuilder(
-                        "select book.id as id," +
+                        "select distinct book.id as id," +
                         "book.title as title, " +
                         "book.book_cover as book_cover, " +
                         "book.price as price, " +

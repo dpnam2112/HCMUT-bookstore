@@ -27,8 +27,10 @@ public class BookController {
         // parse the category ids from query parameter
         String[] categoriesStr = (catgQueryParam == null) ? null : catgQueryParam.split(",");
         var catgIds = new ArrayList<Integer>();
-        for (var catg : categoriesStr) {
-            catgIds.add(Integer.valueOf(catg));
+        if (categoriesStr != null) {
+            for (var catg : categoriesStr) {
+                catgIds.add(Integer.valueOf(catg));
+            }
         }
 
         if (pageNumber == null || perPage == null) {

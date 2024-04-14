@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 
-export function ProductList() {
+export function ProductList({ products }) {
     const [curPage, setCurPage] = useState(1);
+    const [bookData, setBookData] = useState([]);
+    const booksPerPage = 12;
     const totalPage = 4; // Thay đổi số trang tùy theo nhu cầu của bạn
 
     const changePage = (newPage) => {
@@ -10,134 +12,46 @@ export function ProductList() {
     };
 
     const display = {
-        data_set: [
-        {
-            'name': '1',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '2',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '3',
-            'price': 1500000,
-            'sale-price': 1500000,
-        },
-        {
-            'name': '4',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '5',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '6',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '7',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '8',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '9',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '10',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '11',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '12',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '13',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '14',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '15',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '16',
-            'price': 1500000,
-            'sale-price': 1200000,
-        },
-        {
-            'name': '17',
-            'price': 1500000,
-            'sale-price': 1200000,
-        }
-        ], // Thêm dữ liệu sản phẩm ở đây
+        data_set: [], // Thêm dữ liệu sản phẩm ở đây
         cur_page: curPage, // Thay đổi tên biến từ display.cur_page sang curPage
         per_page: 12, // Thay đổi số lượng sản phẩm trên mỗi trang nếu cần
     };
 
+    display.data_set = bookData;
+
     const renderProductList = () => {
         // Đặt logic render sản phẩm ở đây
-        return (
-            <div class = "row" id = "product-list">
-                {display.data_set
-                    .slice(
-                        (display.cur_page - 1) * display.per_page,
-                        display.cur_page * display.per_page
-                    )
-                    .map((item, index) => (
-                        <div key={`product-${index}`} className="col-6 col-sm-3 mb-4">
-                            <div className="card rounded-0">
-                                <img src={process.env.PUBLIC_URL + '/img/kienvachauchau1.jpg'} className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    {item['sale-price'] !== item.price && <div className="flash"></div>}
-                                    <p className="card-text text-center">{item.name}</p>
-                                    <div className="product-price border-top pt-3" style={{ minHeight: '58px' }}>
-                                        <div className="float-start">
-                                            <h6 className="card-title text-primary">
-                                                {item['sale-price'].toLocaleString('de-US', 0)}đ
-                                            </h6>
-                                            {item['sale-price'] !== item.price && (
-                                                <p className="card-text text-decoration-line-through" style={{ fontSize: '12px' }}>
-                                                    {item.price.toLocaleString('de-US', 0)}đ
-                                                </p>
-                                            )}
-                                        </div>
-                                        <a href="#" className="btn--primary float-end">
-                                            Chi tiết
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-            </div>
-        );
+      return (
+	<div className="row row-cols-1 row-cols-md-2 row-cols-lg-4" id="product-list">
+	    {products
+		.slice(
+		    (display.cur_page - 1) * display.per_page,
+		    display.cur_page * display.per_page
+		)
+		.map((item, index) => (
+		    <div key={`product-${index}`} className="col mb-4">
+			<div className="card h-100">
+			    <img src={item.bookCover} className="card-img-top" height="200px" alt="..." />
+			    <div className="card-body d-flex flex-column">
+				<h5 className="card-title text-center">{item.title}</h5>
+				<div className="mt-auto">
+				    <div className="product-price border-top pt-3">
+					<div className="float-start">
+					    <h6 className="card-title text-primary">
+						{item.price.toLocaleString('de-US', 0)}đ
+					    </h6>
+					</div>
+					<a href="#" className="btn btn-primary float-end">
+					    Chi tiết
+					</a>
+				    </div>
+				</div>
+			    </div>
+			</div>
+		    </div>
+		))}
+	</div>
+      );
     };
 
     const handlePrevClick = () => {
@@ -176,7 +90,6 @@ export function ProductList() {
                     </li>
                 </ul>
             </nav>
-
         </div>
     );
 }
