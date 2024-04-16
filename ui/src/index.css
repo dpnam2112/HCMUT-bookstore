@@ -180,3 +180,8 @@ code {
 .amount-choice input:focus {
   outline: 0;
 }
+
+.bg-store{
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}

@@ -258,10 +258,10 @@ function Products() {
 export function ProductsPage() {
   return (
     <div className="vh-100">
-	<Header/>
-	<Breadcrumb/>
-	<Products/>
-	<Footer/>
+        <Header/>
+        <Breadcrumb/>
+        <Products/>
+        <Footer/>
     </div>
   );
 }

@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { LoginPage } from './pages/login';
 import { SignUpPage } from './pages/signup';
 import { ProductsPage } from './pages/products';
+import { ProductItemPage } from './pages/product_detail';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/products",
     element: <ProductsPage/>
+  },
+  {
+    path: "/product_detail",
+    element: <ProductItemPage/>
   }
 ]);
 
