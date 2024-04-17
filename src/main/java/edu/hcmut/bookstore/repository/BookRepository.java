@@ -1,6 +1,7 @@
 package edu.hcmut.bookstore.repository;
 
 import edu.hcmut.bookstore.business.Book;
+import edu.hcmut.bookstore.business.CartItem;
 import edu.hcmut.bookstore.db.DbManager;
 import org.apache.ignite.cache.query.annotations.QueryGroupIndex;
 
@@ -142,5 +143,44 @@ public class BookRepository {
         }
 
         return bookList;
+    }
+
+    public List<CartItem> getCartItemsOfUser(Long id) {
+        // 'quantity' is the quantity of books in the customer's cart
+        var query = "select book.id as id, author_id, publisher_id, title, book_cover, price, remaining_quantity, quantity " +
+                "from book " +
+                "join cart_item on cart_item.book_id = book.id " +
+                "join cart on cart.id = cart_item.cart_id " +
+                "where cart.customer_id = ?";
+
+        var cartItems = new ArrayList<CartItem>();
+        if (id == null) {
+            return cartItems;
+        }
+
+        var dataSrc = DbManager.getMySqlDataSrc();
+        try (var conn = dataSrc.getConnection()) {
+            var prepStmt = conn.prepareStatement(query);
+            prepStmt.setLong(1, id);
+
+            var resultSet = prepStmt.executeQuery();
+            while (resultSet.next()) {
+                var book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("book_cover"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("remaining_quantity")
+                );
+
+                var cart_quantity = resultSet.getInt("quantity");
+                cartItems.add(new CartItem(book, cart_quantity));
+            }
+        } catch (Exception exception) {
+            System.out.println(exception);
+            return null;
+        }
+
+        return cartItems;
     }
 }

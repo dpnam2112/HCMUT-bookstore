@@ -1,6 +1,7 @@
 package edu.hcmut.bookstore.controllers;
 
 import edu.hcmut.bookstore.repository.BookRepository;
+import edu.hcmut.bookstore.repository.SessionRepository;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
@@ -43,5 +44,13 @@ public class BookController {
         Long start = (pageNumber - 1) * perPage;
         var books = bookRepo.queryBooks(bookName, catgIds, start, perPage);
         ctx.json(books);
+    }
+
+    public static void getBooksFromUserCart(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+//        var sessionRepo = new SessionRepository();
+//        var customer = sessionRepo.getCustomer(ctx.cookie("session-id"));
+        var cartItems = bookRepo.getCartItemsOfUser(1L);
+        ctx.json(cartItems);
     }
 }

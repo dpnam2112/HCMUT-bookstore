@@ -1,13 +1,7 @@
 package edu.hcmut.bookstore.config;
 
 import edu.hcmut.bookstore.business.Book;
-import edu.hcmut.bookstore.business.Category;
-import edu.hcmut.bookstore.business.Customer;
-import edu.hcmut.bookstore.business.Session;
-import org.apache.ignite.cache.store.jdbc.CacheJdbcPojoStoreFactory;
-import org.apache.ignite.cache.store.jdbc.JdbcType;
-import org.apache.ignite.cache.store.jdbc.JdbcTypeField;
-import org.apache.ignite.cache.store.jdbc.dialect.MySQLDialect;
+import edu.hcmut.bookstore.business.SessionInfo;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
 
@@ -23,7 +17,7 @@ public class IgniteConfig {
         var bookCacheCfg = new CacheConfiguration<Integer, Book>();
         bookCacheCfg.setName("BookCache");
 
-        var sessionCacheCfg = new CacheConfiguration<Integer, Session>();
+        var sessionCacheCfg = new CacheConfiguration<Integer, SessionInfo>();
         sessionCacheCfg.setName("SessionCache");
 
         cfg.setCacheConfiguration(bookCacheCfg, sessionCacheCfg);

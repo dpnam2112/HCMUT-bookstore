@@ -6,10 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 
-public class Session {
+public class SessionInfo {
     public final String id;
     public final LocalDateTime timeCreated;
-    public final long userId;
+    public final Customer customer;
 
     private static String generateSessionId(String data) {
         try {
@@ -32,15 +32,19 @@ public class Session {
         }
     }
 
-    Session(String id, LocalDateTime datetime, long userId) {
+    SessionInfo(String id, LocalDateTime datetime, Customer customer) {
         this.id = id;
         this.timeCreated = datetime;
-        this.userId = userId;
+        this.customer = customer;
     }
 
-    public static Session newSession(long userId) {
+    public Customer getCustomerData() {
+        return this.customer;
+    }
+
+    public static SessionInfo newSession(Customer customer) {
         var datetime = LocalDateTime.now();
-        return new Session(generateSessionId(UUID.randomUUID().toString()), datetime, userId);
+        return new SessionInfo(generateSessionId(UUID.randomUUID().toString()), datetime, customer);
     }
 
     public boolean isValid() {

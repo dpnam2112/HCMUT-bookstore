@@ -1,23 +1,25 @@
 package edu.hcmut.bookstore.controllers;
 
 import edu.hcmut.bookstore.business.CustomerCredential;
-import edu.hcmut.bookstore.business.Session;
+import edu.hcmut.bookstore.business.SessionInfo;
 import edu.hcmut.bookstore.db.DbManager;
 import edu.hcmut.bookstore.repository.CustomerRepository;
 import edu.hcmut.bookstore.repository.SessionRepository;
-import edu.hcmut.bookstore.session.SessionManager;
 import io.javalin.http.Context;
 
 public class AuthController {
     public static void login(Context ctx) {
-        // Check if the user has logged in
         try {
             var sessionRepo = new SessionRepository(DbManager.getIgniteNode());
             var sessionId = ctx.cookie("session-id");
-            if (sessionId != null && sessionRepo.getUserId(sessionId) != null) {
-                ctx.redirect("http://localhost:3000/");
+
+            // Get customer object from the session to check if the user has logged in before
+            if (sessionId != null) {
+                var customer = sessionRepo.getCustomer(sessionId);
+                ctx.json(customer);
             }
 
+            // Retrieve user's information from login credentials.
             var credential = ctx.bodyAsClass(CustomerCredential.class);
             var customerRepo = new CustomerRepository();
             var customer = customerRepo.getCustomerByCredential(credential);
@@ -27,7 +29,8 @@ public class AuthController {
                 return;
             }
 
-            var session = Session.newSession(customer.getId());
+            // Create new session and add session information to the cache.
+            var session = SessionInfo.newSession(customer);
             ctx.cookie("session-id", session.id);
             sessionRepo.addSession(session);
 
@@ -43,13 +46,8 @@ public class AuthController {
         var sessionId = ctx.cookie("session-id");
         try {
             var sessionRepo = new SessionRepository(DbManager.getIgniteNode());
-            var userId = sessionRepo.getUserId(sessionId);
-
-            // Retrieve customer object using userId as the identifier
-            var customerRepo = new CustomerRepository();
-            customerRepo.getCustomerById(userId);
-
-            ctx.json(customerRepo);
+            var customer = sessionRepo.getCustomer(sessionId);
+            ctx.json(customer);
         } catch (Exception exception) {
             System.out.println("An exception is raised while getUserInfo is called.");
             System.out.println(exception);
