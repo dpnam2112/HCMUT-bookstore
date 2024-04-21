@@ -58,6 +58,7 @@ CREATE TABLE cust_order (
     date_created DATETIME DEFAULT NOW(),
     payment_method VARCHAR(50),
     user_address VARCHAR(100),
+    phone_number VARCHAR(50),
 
     FOREIGN KEY (customer_id) REFERENCES customer (id)
 );
