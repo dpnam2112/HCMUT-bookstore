@@ -20,6 +20,7 @@ public class BookstoreApplication {
 		})
 				.get("/test", BookController::getBook)
 				.post("/api/login", AuthController::login)
+				.get("/api/get-user", AuthController::getUserInfo)
 				.get("/api/books", BookController::getBooks)
 				.get("/api/cart", BookController::getBooksFromUserCart);
 

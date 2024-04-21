@@ -24,8 +24,12 @@ public class SessionRepository {
      * */
     public Customer getCustomer(String sessionId) {
         IgniteCache<String, SessionInfo> sessionCache = this.ignite.getOrCreateCache("SessionCache");
+        if (sessionId == null) {
+            return null;
+        }
+
         var session = sessionCache.get(sessionId);
-        if (!session.isValid()) {
+        if (session == null || !session.isValid()) {
             return null;
         }
         return session.customer;

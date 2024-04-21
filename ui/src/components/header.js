@@ -1,5 +1,27 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { UserContext } from "../context"
+
+export function UserNavigation() {
+  const userInfo = useContext(UserContext);
+
+  if (userInfo != null) {
+    return (
+      <>
+	<ul className="px-2 py-1 dropdown-menu dropdown-menu-end">
+	  <li>Xin chào, {userInfo.username}!</li>
+	</ul>
+      </>
+    )
+  } else {
+      return (
+	<ul className="px-2 py-1 dropdown-menu dropdown-menu-end">
+	  <li className="mb-2"><a href="/login" className="btn btn-primary w-100">Login</a></li>
+	  <li className="mb-2"><a href="/signup " className="btn btn-secondary w-100">Sign up</a></li>
+	</ul>
+      )
+  }
+}
 
 export function Header() {
   const [keyword, setKeyword] = useState("");
@@ -30,10 +52,7 @@ export function Header() {
 	</div>
 	<div className="p-0 dropdown">
 	  <img src="/account.svg" data-bs-toggle="dropdown" role="button" className="dropdown-toggle" height="35" width="35" alt="account"/>
-	  <ul className="px-2 py-1 dropdown-menu dropdown-menu-end">
-	    <li className="mb-2"><a href="/login" className="btn btn-primary w-100">Login</a></li>
-	    <li className="mb-2"><a href="/signup " className="btn btn-secondary w-100">Sign up</a></li>
-	  </ul>
+	  <UserNavigation/>
 	</div>
       </div>
     </header>

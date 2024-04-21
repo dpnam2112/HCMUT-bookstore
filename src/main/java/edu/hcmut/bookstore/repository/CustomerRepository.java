@@ -2,6 +2,7 @@ package edu.hcmut.bookstore.repository;
 
 import edu.hcmut.bookstore.business.Customer;
 import edu.hcmut.bookstore.business.CustomerCredential;
+import edu.hcmut.bookstore.business.OrderInfo;
 import edu.hcmut.bookstore.db.DbManager;
 
 import javax.sql.DataSource;
@@ -70,6 +71,33 @@ public class CustomerRepository {
         } catch (Exception exception) {
             System.out.println(exception);
             return null;
+        }
+    }
+
+    public void saveOrder(Customer customer, OrderInfo orderInfo) {
+        var dataSrc = DbManager.getMySqlDataSrc();
+        try (var conn = dataSrc.getConnection()) {
+            var _getCartIdQuery = "select id from cart where customer_id = ?";
+            var getCartIdQuery = conn.prepareStatement(_getCartIdQuery);
+
+            var resultSet = getCartIdQuery.executeQuery();
+            if (!resultSet.next()) {
+                return;
+            }
+
+            int cartId = resultSet.getInt(1);
+
+            var addOrderQuery = conn.prepareStatement("insert into cust_order (customer_id, payment_method, user_address, cart_id)" +
+                    "values (?, ?, ?, ?);");
+
+            addOrderQuery.setLong(1, customer.getId());
+            addOrderQuery.setString(2, orderInfo.getPaymentMethod());
+            addOrderQuery.setString(3, orderInfo.getAddress());
+            addOrderQuery.setInt(4, cartId);
+
+            addOrderQuery.executeUpdate();
+        } catch (Exception exception) {
+            System.out.println(exception);
         }
     }
 }

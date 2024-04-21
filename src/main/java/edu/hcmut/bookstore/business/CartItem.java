@@ -22,6 +22,7 @@ public class CartItem implements Serializable {
         this.book = book;
     }
 
+
     // Getter for count
     public int getCount() {
         return count;
@@ -31,4 +32,5 @@ public class CartItem implements Serializable {
     public void setCount(int count) {
         this.count = count;
     }
+
 }

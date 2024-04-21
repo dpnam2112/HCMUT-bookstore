@@ -48,6 +48,6 @@ public class SessionInfo {
     }
 
     public boolean isValid() {
-        return false;
+        return true;
     }
 }

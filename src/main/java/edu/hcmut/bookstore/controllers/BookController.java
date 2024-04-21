@@ -1,8 +1,10 @@
 package edu.hcmut.bookstore.controllers;
 
+import edu.hcmut.bookstore.business.Book;
 import edu.hcmut.bookstore.repository.BookRepository;
 import edu.hcmut.bookstore.repository.SessionRepository;
 import io.javalin.http.Context;
+import org.apache.ignite.cache.query.annotations.QueryGroupIndex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +50,13 @@ public class BookController {
 
     public static void getBooksFromUserCart(Context ctx) throws Exception {
         var bookRepo = new BookRepository();
-//        var sessionRepo = new SessionRepository();
-//        var customer = sessionRepo.getCustomer(ctx.cookie("session-id"));
+        var sessionRepo = new SessionRepository();
+        var customer = sessionRepo.getCustomer(ctx.cookie("session-id"));
+        if (customer == null) {
+            System.out.println(ctx.cookie("session-id"));
+            ctx.json(new ArrayList<Book>());
+            return;
+        }
         var cartItems = bookRepo.getCartItemsOfUser(1L);
         ctx.json(cartItems);
     }

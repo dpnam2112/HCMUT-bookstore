@@ -26,7 +26,7 @@ function LoginForm() {
 	    body: JSON.stringify(credential)
         }).then(res => {
             if (res.ok) {
-                console.log("logged in!");
+	      window.location.replace("http://localhost:3000/")
             } else {
 		console.log(res);
                 console.log("not logged in!");
