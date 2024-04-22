@@ -2,6 +2,7 @@ package edu.hcmut.bookstore;
 
 import edu.hcmut.bookstore.controllers.AuthController;
 import edu.hcmut.bookstore.controllers.BookController;
+import edu.hcmut.bookstore.controllers.CustomerController;
 import edu.hcmut.bookstore.db.DbManager;
 import edu.hcmut.bookstore.repository.BookRepository;
 import io.javalin.Javalin;
@@ -22,6 +23,7 @@ public class BookstoreApplication {
 				.post("/api/login", AuthController::login)
 				.get("/api/get-user", AuthController::getUserInfo)
 				.get("/api/books", BookController::getBooks)
+				.post("/api/comfirm-order", CustomerController::confirmOrder)
 				.get("/api/cart", BookController::getBooksFromUserCart);
 
 

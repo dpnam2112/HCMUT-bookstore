@@ -1,20 +1,18 @@
 package edu.hcmut.bookstore.business;
 
+import java.io.Serializable;
+
 public class OrderInfo {
 
     private String fullName;
     private String email;
     private String address;
-    private String paymentMethod;
     private String phoneNumber;
+    private String paymentMethod;
 
     // Constructor
-    public OrderInfo(String fullName, String email, String address, String phoneNumber, String paymentMethod) {
-        this.fullName = fullName;
-        this.email = email;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.paymentMethod = paymentMethod;
+    public OrderInfo() {
+
     }
 
     // Getters

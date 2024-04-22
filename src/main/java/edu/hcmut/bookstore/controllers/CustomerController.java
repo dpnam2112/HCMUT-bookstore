@@ -11,6 +11,7 @@ public class CustomerController {
     public static void confirmOrder(Context ctx) throws Exception {
         var sessionRepo = new SessionRepository();
         var customerRepo = new CustomerRepository();
+        System.out.println(ctx.body());
         var orderInfo = ctx.bodyAsClass(OrderInfo.class);
         var sessionId = ctx.cookie("session-id");
         var customer = sessionRepo.getCustomer(sessionId);
