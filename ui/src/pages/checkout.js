@@ -2,7 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
-
+import { OrderSuccessModal, OrderFailedModal } from '../components/modals'
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js';
 
 const UserProducts = () => {
   const [products, setProducts] = useState([]);
@@ -42,8 +43,6 @@ const UserProducts = () => {
 };
 
 const CheckoutForm = () => {
-
-
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -51,6 +50,13 @@ const CheckoutForm = () => {
     address: '',
     paymentMethod: 'cash'
   });
+
+  const [modalContent, setModalContent] = useState({
+    header: '',
+    message: ''
+  })
+
+  const [modalType, toggleModal] = useState(0);
 
   const handleChange = (e) => {
     setFormData({
@@ -71,12 +77,19 @@ const CheckoutForm = () => {
       body: JSON.stringify(formData),
     }).then((response) => {
       if (response.status == 200) {
-	console.log("the order is confirmed.");
+	let modal = new Modal(document.getElementById('successModal'), { focus: true });
+	modal.show();
       } else {
-	console.log("the order is not confirmed.");
+	let modal = new Modal(document.getElementById('failedModal'), { focus: true });
+	modal.show();
       }
     });
   };
+
+
+  if (modalContent.header != '' && modalContent.message != '') {
+    console.log(modalContent);
+  }
 
   return (
       <div className="row justify-content-center">
@@ -121,10 +134,11 @@ const CheckoutForm = () => {
 		</label>
 	      </div>
 	    </div>
-
             <button type="button" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
           </form>
         </div>
+	<OrderSuccessModal id={'successModal'} />
+	<OrderFailedModal id={'failedModal'} />
       </div>
   );
 };
