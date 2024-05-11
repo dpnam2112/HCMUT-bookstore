@@ -1,5 +1,6 @@
 package edu.hcmut.bookstore.repository;
 
+import edu.hcmut.bookstore.business.Book;
 import edu.hcmut.bookstore.business.Customer;
 import edu.hcmut.bookstore.business.CustomerCredential;
 import edu.hcmut.bookstore.business.OrderInfo;
@@ -93,7 +94,7 @@ public class CustomerRepository {
         conn.setAutoCommit(false);
         int cartId = resultSet.getInt(1);
         try {
-            var addOrderQuery = conn.prepareStatement("insert into cust_order (customer_id, payment_method, user_address, cart_id, phone_number)" +
+            var addOrderQuery = conn.prepareStatement("insert into cust_order (customer_id, payment_method, user_address, cart_id, phone_number) " +
                     "values (?, ?, ?, ?, ?);");
 
             addOrderQuery.setLong(1, customer.getId());
@@ -131,6 +132,43 @@ public class CustomerRepository {
             exception.printStackTrace();
             conn.rollback();
         }
+    }
 
+    /** Add a new book to cart with a determined quantity.
+     * @return true if the operation is successful, false otherwise.
+     * */
+    public boolean addBookToCart(long customerId, int bookId, int bookCount) throws Exception {
+        var conn = DbManager.getMySqlDataSrc().getConnection();
+        conn.setAutoCommit(false);
+
+        // Find user's cart id
+        var getCartIdQuery = conn.prepareStatement("select id from cart where customer_id = ?");
+        getCartIdQuery.setLong(1, customerId);
+        var res = getCartIdQuery.executeQuery();
+
+        if (!res.next()) {
+            return false;
+        }
+
+        var cartId = res.getInt("id");
+
+        var addNewBookStmt = conn.prepareStatement("insert into cart_item (cart_id, book_id, quantity) values (?, ?, ?)");
+        addNewBookStmt.setInt(1, cartId);
+        addNewBookStmt.setInt(2, bookId);
+        addNewBookStmt.setInt(3, bookCount);
+        try {
+            int rowCount = addNewBookStmt.executeUpdate();
+        } catch (SQLException exp) {
+            // If the type of book is already in the cart
+            var updateQuantity = conn.prepareStatement("update cart_item set quantity = quantity + ? where cart_id = ? and book_id = ?");
+            int rowAffected = updateQuantity.executeUpdate();
+            if (rowAffected != 1) {
+                conn.rollback();
+                return false;
+            }
+        }
+
+        conn.commit();
+        return true;
     }
 }

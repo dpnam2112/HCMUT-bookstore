@@ -1,18 +1,28 @@
 package edu.hcmut.bookstore.controllers;
 
+import edu.hcmut.bookstore.business.Author;
 import edu.hcmut.bookstore.business.Book;
+import edu.hcmut.bookstore.business.BookDetail;
+import edu.hcmut.bookstore.business.Publisher;
 import edu.hcmut.bookstore.repository.BookRepository;
 import edu.hcmut.bookstore.repository.SessionRepository;
 import io.javalin.http.Context;
-import org.apache.ignite.cache.query.annotations.QueryGroupIndex;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BookController {
     public static void getBook(Context ctx) throws Exception {
         var bookRepo = new BookRepository();
         ctx.json(bookRepo.getBookById(1));
+    }
+
+    public static void addBook(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        var bookPayload = ctx.bodyAsClass(Book.class);
+        if (bookPayload.getId() != -1) {
+            ctx.status(400);
+            return;
+        }
+        bookRepo.addBook(bookPayload);
     }
 
     public static void getBooks(Context ctx) throws Exception {
@@ -60,4 +70,52 @@ public class BookController {
         var cartItems = bookRepo.getCartItemsOfUser(1L);
         ctx.json(cartItems);
     }
+
+    public static void newAuthor(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        var authorPayload = ctx.bodyAsClass(Author.class);
+        if (!bookRepo.addAuthor(authorPayload)) {
+            ctx.status(500);
+        }
+    }
+
+    public static void newPublisher(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        var publisherPayload = ctx.bodyAsClass(Publisher.class);
+        if (!bookRepo.addPublisher(publisherPayload)) {
+            ctx.status(500);
+        }
+    }
+
+    public static void updateBook(Context ctx) throws Exception {
+        var book = ctx.bodyAsClass(Book.class);
+
+        if (book.getId() < 1) {
+            ctx.status(400);
+            return;
+        }
+
+        var bookRepo = new BookRepository();
+        if (!bookRepo.updateBook(book)) {
+            ctx.status(500);
+            return;
+        }
+    }
+
+    public static void getBookCategories(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        var categories = bookRepo.getCategories();
+        ctx.json(categories);
+    }
+
+    public static void getBookDetail(Context ctx) throws Exception {
+        // path param: bookId
+        var bookRepo = new BookRepository();
+        var book = bookRepo.getBookById(Integer.parseInt(ctx.pathParam("bookId")));
+        var publisher = bookRepo.getPublisher(book.getId());
+        var author = bookRepo.getAuthor(book.getId());
+        ctx.json(new BookDetail(book, publisher, author));
+    }
+
+
 }

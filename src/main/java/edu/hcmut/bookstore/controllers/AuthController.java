@@ -19,8 +19,8 @@ public class AuthController {
                 ctx.removeCookie(sessionId);
             } else {
                 ctx.json(customer);
-                return;
             }
+            return;
         }
 
         // Retrieve user's information from login credentials.
@@ -46,10 +46,14 @@ public class AuthController {
         var sessionId = ctx.cookie("session-id");
         var sessionRepo = new SessionRepository(DbManager.getIgniteNode());
         var customer = sessionRepo.getCustomer(sessionId);
+
         if (customer == null) {
             ctx.status(401);
+            ctx.removeCookie("session-id");
+            sessionRepo.removeSession(sessionId);
             return;
         }
+
         ctx.json(customer);
     }
 

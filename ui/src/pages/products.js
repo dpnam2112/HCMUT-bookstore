@@ -1,12 +1,12 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'font-awesome/css/font-awesome.min.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+//import 'bootstrap/dist/css/bootstrap.css'
+//import 'font-awesome/css/font-awesome.min.css'
+//import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import '../index.css'
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { ProductList } from '../components/paging'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 function useQuery() {
@@ -155,6 +155,14 @@ function PriceFilter() {
   }
 
   function CategoryFilter() {
+    const [categories, setCategories] = useEffect([]);
+
+    useEffect(() => {
+      fetch("http://localhost:8080/api/categories")
+	.then(response => response.json())
+	.then(data => setCategories(data))
+    }, []);
+
     return (
       <div className="card w-100 border border-0 mb-5">
         <h5 className="card-header bg-white text-dark border border-0 ps-0">THỂ LOẠI</h5>
@@ -164,36 +172,6 @@ function PriceFilter() {
             <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-0" />
             <label htmlFor="filter-cost-0" className="form-check-label">
             Sách kinh tế
-            </label>
-          </li>
-          <li className="list-group-item border border-0 text-hover-primary">
-            <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-1" />
-            <label htmlFor="filter-cost-1" className="form-check-label">
-            Sách kỹ năng
-            </label>
-          </li>
-          <li className="list-group-item border border-0 text-hover-primary">
-            <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-2" />
-            <label htmlFor="filter-cost-2" className="form-check-label">
-            Sách thiếu nhi
-            </label>
-          </li>
-          <li className="list-group-item border border-0 text-hover-primary">
-            <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-3" />
-            <label htmlFor="filter-cost-3" className="form-check-label">
-            Sách văn học
-            </label>
-          </li>
-          <li className="list-group-item border border-0 text-hover-primary">
-            <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-4" />
-            <label htmlFor="filter-cost-4" className="form-check-label">
-            Sách tuổi teen
-            </label>
-          </li>
-          <li className="list-group-item border border-0 text-hover-primary">
-            <input className="form-check-input me-2 border rounded-0" type="checkbox" value="" id="filter-cost-5" />
-            <label htmlFor="filter-cost-5" className="form-check-label">
-            Sách thường thức
             </label>
           </li>
         </div>

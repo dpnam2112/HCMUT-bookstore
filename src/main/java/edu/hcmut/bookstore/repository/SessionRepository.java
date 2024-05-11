@@ -41,7 +41,9 @@ public class SessionRepository {
      * */
     public boolean removeSession(String sessionId) {
         IgniteCache<String, SessionInfo> sessionCache = this.ignite.getOrCreateCache("SessionCache");
-        sessionCache.remove(sessionId);
+        if (sessionId != null) {
+            sessionCache.remove(sessionId);
+        }
         return true;
     }
 

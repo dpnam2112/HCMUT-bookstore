@@ -17,8 +17,22 @@ public class Book implements Serializable {
 
     private int remainingQuantity;
 
+    private int authorId;
+
+    private int publisherId;
+
     // Constructors
     public Book() {
+    }
+
+    public Book(int id, String title, String bookCover, double price, int remainingQuantity, int authorId, int publisherId) {
+        this.id = id;
+        this.title = title;
+        this.bookCover = bookCover;
+        this.price = price;
+        this.remainingQuantity = remainingQuantity;
+        this.authorId = authorId;
+        this.publisherId = publisherId;
     }
 
     public Book(int id, String title, String bookCover, double price, int remainingQuantity) {
@@ -26,7 +40,7 @@ public class Book implements Serializable {
         this.title = title;
         this.bookCover = bookCover;
         this.price = price;
-        this.remainingQuantity = remainingQuantity;
+        this.remainingQuantity = remainingQuantity;     
     }
 
     // Getters and Setters
@@ -68,5 +82,13 @@ public class Book implements Serializable {
 
     public void setRemainingQuantity(int remainingQuantity) {
         this.remainingQuantity = remainingQuantity;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public int getPublisherId() {
+        return publisherId;
     }
 }
