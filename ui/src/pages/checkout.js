@@ -145,9 +145,9 @@ const CheckoutForm = () => {
 
 export const CheckoutPage = () => {
   return (
-    <div className="vh-100">
+    <div>
     <Header/>
-      <div className="container">
+      <div className="container vh-90">
 	<h2 className="text-center mb-4">Thanh toán</h2>
 	<div className="row">
 	  <div className="col-md-6">

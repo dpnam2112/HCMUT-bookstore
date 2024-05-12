@@ -12,31 +12,7 @@ import { UserContext } from './context';
 import App from "./App.js";
 import { LoginPage } from './pages/login';
 import { SignUpPage } from './pages/signup';
-import { ProductsPage } from './pages/products';
-import { ProductItemPage } from './pages/product_detail';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App/>
-  },
-  {
-    path: "/login",
-    element: <LoginPage/>
-  },
-  {
-    path: "/signup",
-    element: <SignUpPage/>
-  },
-  {
-    path: "/products",
-    element: <ProductsPage/>
-  },
-  {
-    path: "/product_detail",
-    element: <ProductItemPage/>
-  }
-]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
