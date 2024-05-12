@@ -1,11 +1,10 @@
-import '../itemproduct.css'
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { ProductList } from '../components/paging'
 import { useLocation } from 'react-router-dom'
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js';
-import $ from 'jquery';
+import { useQuery } from '../utils/query.js';
 
 export function ResultModal({id, header, message }) {
 
@@ -38,8 +37,11 @@ export const BookDetail = () => {
   const [messageContent, setMessageContent] = useState({ success: null, message: null })
   const [modalContent, setModalContent] = useState({ header: null, message: null })
 
+  let query = useQuery();
+  let bookId = query.get("id");
+
   useEffect(() => {
-    fetch('http://localhost:8080/api/bookDetail/1')
+    fetch('http://localhost:8080/api/bookDetail/' + bookId)
       .then(response => response.json())
       .then(data => {
         setBook(data.book);

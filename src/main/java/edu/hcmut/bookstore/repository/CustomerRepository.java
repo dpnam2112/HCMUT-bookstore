@@ -1,9 +1,6 @@
 package edu.hcmut.bookstore.repository;
 
-import edu.hcmut.bookstore.business.Book;
-import edu.hcmut.bookstore.business.Customer;
-import edu.hcmut.bookstore.business.CustomerCredential;
-import edu.hcmut.bookstore.business.OrderInfo;
+import edu.hcmut.bookstore.business.*;
 import edu.hcmut.bookstore.db.DbManager;
 
 import javax.sql.DataSource;
@@ -11,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class CustomerRepository {
     public CustomerRepository() throws Exception{
@@ -142,7 +140,7 @@ public class CustomerRepository {
         conn.setAutoCommit(false);
 
         // Find user's cart id
-        var getCartIdQuery = conn.prepareStatement("select id from cart where customer_id = ?");
+        var getCartIdQuery = conn.prepareStatement("select cart_id from customer where id = ?");
         getCartIdQuery.setLong(1, customerId);
         var res = getCartIdQuery.executeQuery();
 
@@ -150,7 +148,7 @@ public class CustomerRepository {
             return false;
         }
 
-        var cartId = res.getInt("id");
+        var cartId = res.getInt("cart_id");
 
         var addNewBookStmt = conn.prepareStatement("insert into cart_item (cart_id, book_id, quantity) values (?, ?, ?)");
         addNewBookStmt.setInt(1, cartId);
@@ -161,6 +159,9 @@ public class CustomerRepository {
         } catch (SQLException exp) {
             // If the type of book is already in the cart
             var updateQuantity = conn.prepareStatement("update cart_item set quantity = quantity + ? where cart_id = ? and book_id = ?");
+            updateQuantity.setInt(1, bookCount);
+            updateQuantity.setInt(2, cartId);
+            updateQuantity.setInt(3, bookId);
             int rowAffected = updateQuantity.executeUpdate();
             if (rowAffected != 1) {
                 conn.rollback();

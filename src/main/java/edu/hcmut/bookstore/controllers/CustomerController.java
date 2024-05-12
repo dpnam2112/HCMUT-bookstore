@@ -3,6 +3,7 @@ package edu.hcmut.bookstore.controllers;
 import edu.hcmut.bookstore.business.Customer;
 import edu.hcmut.bookstore.business.OrderInfo;
 import edu.hcmut.bookstore.db.DbManager;
+import edu.hcmut.bookstore.repository.BookRepository;
 import edu.hcmut.bookstore.repository.CustomerRepository;
 import edu.hcmut.bookstore.repository.SessionRepository;
 import io.javalin.http.Context;
@@ -22,10 +23,8 @@ public class CustomerController {
         var sessionRepo = new SessionRepository();
         var customerRepo = new CustomerRepository();
 
-//        var sessionId = ctx.cookie("session-id");
-//        var customer = sessionRepo.getCustomer(sessionId);
-
-        var customer = (new CustomerRepository()).getCustomerById(1);
+        var sessionId = ctx.cookie("session-id");
+        var customer = sessionRepo.getCustomer(sessionId);
 
         if (customer == null) {
             ctx.status(403);
@@ -52,5 +51,21 @@ public class CustomerController {
 
         customerRepo.addBookToCart(customer.getId(), bookId, bookCount);
         ctx.status(200);
+    }
+
+    public static void getUserCart(Context ctx) throws Exception {
+        var sessionRepo = new SessionRepository();
+        var bookRepo = new BookRepository();
+
+        var sessionId = ctx.cookie("session-id");
+        var customer = sessionRepo.getCustomer(sessionId);
+
+        if (customer == null) {
+            ctx.status(403);
+            return;
+        }
+
+        var cartItems = bookRepo.getCartItemsOfUser(customer.getId());
+        ctx.json(cartItems);
     }
 }

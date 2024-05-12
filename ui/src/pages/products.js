@@ -1,19 +1,11 @@
 import React from 'react'
-//import 'bootstrap/dist/css/bootstrap.css'
-//import 'font-awesome/css/font-awesome.min.css'
-//import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import '../index.css'
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { ProductList } from '../components/paging'
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useQuery } from '../utils/query.js'
 
-function useQuery() {
-  // Used by product page to query products.
-  const { search } = useLocation();
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
 
 function Breadcrumb() {
     return (

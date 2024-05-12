@@ -147,9 +147,9 @@ export const CheckoutPage = () => {
   return (
     <div>
     <Header/>
-      <div className="container vh-90">
+      <div className="container">
 	<h2 className="text-center mb-4">Thanh toán</h2>
-	<div className="row">
+	<div className="row vh-90">
 	  <div className="col-md-6">
 	    <UserProducts/>
 	  </div>
