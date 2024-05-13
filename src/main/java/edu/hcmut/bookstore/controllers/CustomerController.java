@@ -1,12 +1,13 @@
 package edu.hcmut.bookstore.controllers;
 
-import edu.hcmut.bookstore.business.Customer;
 import edu.hcmut.bookstore.business.OrderInfo;
-import edu.hcmut.bookstore.db.DbManager;
 import edu.hcmut.bookstore.repository.BookRepository;
 import edu.hcmut.bookstore.repository.CustomerRepository;
 import edu.hcmut.bookstore.repository.SessionRepository;
+import edu.hcmut.bookstore.requestPayload.BookIdQuantityPair;
 import io.javalin.http.Context;
+
+import java.util.ArrayList;
 
 public class CustomerController {
     public static void confirmOrder(Context ctx) throws Exception {
@@ -50,6 +51,34 @@ public class CustomerController {
         }
 
         customerRepo.addBookToCart(customer.getId(), bookId, bookCount);
+        ctx.status(200);
+    }
+
+    public static void updateUserCart(Context ctx) throws Exception {
+        var sessionRepo = new SessionRepository();
+        var customerRepo = new CustomerRepository();
+
+        var sessionId = ctx.cookie("session-id");
+        var customer = sessionRepo.getCustomer(sessionId);
+
+        if (customer == null) {
+            ctx.status(403);
+            return;
+        }
+
+        var payload = ctx.bodyAsClass(BookIdQuantityPair.class);
+
+        if (payload.getBookIds().size() != payload.getBookCounts().size()) {
+            ctx.status(400);
+            ctx.result("The length of bookIds must be equal to the length of bookCounts.");
+            return;
+        }
+
+        if (!customerRepo.updateCart(customer.getId(), payload)) {
+            ctx.status(500);
+            return;
+        }
+
         ctx.status(200);
     }
 

@@ -1,10 +1,10 @@
-import React from 'react'
-import '../index.css'
-import { Header } from '../components/header'
-import { Footer } from '../components/footer'
-import { ProductList } from '../components/paging'
-import { useEffect, useState } from 'react'
-import { useQuery } from '../utils/query.js'
+import React from 'react';
+import '../index.css';
+import { Header } from '../components/header';
+import { Footer } from '../components/footer';
+import { ProductList } from '../components/paging';
+import { useEffect, useState } from 'react';
+import { useQuery } from '../utils/query.js';
 
 
 function Breadcrumb() {
@@ -147,7 +147,7 @@ function PriceFilter() {
   }
 
   function CategoryFilter() {
-    const [categories, setCategories] = useEffect([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
       fetch("http://localhost:8080/api/categories")
@@ -228,10 +228,10 @@ function Products() {
 export function ProductsPage() {
   return (
     <div className="vh-100">
-        <Header/>
-        <Breadcrumb/>
+      <Header/>
+	<Breadcrumb/>
         <Products/>
-        <Footer/>
+      <Footer/>
     </div>
   );
 }

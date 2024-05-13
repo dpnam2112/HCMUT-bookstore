@@ -33,7 +33,7 @@ export function Header() {
   return (
     <header className="container d-flex justify-content-between py-2">
       <div className="d-flex py-1 justify-content-between">
-	<img alt="hcmut-logo" className="mx-2" src="/hcmut-logo.png" width="35" height="35"/>
+	<a href="/"><img alt="hcmut-logo" className="mx-2" src="/hcmut-logo.png" width="35" height="35"/></a>
 	<h4 className="py-1">HCMUT Bookstore</h4>
       </div>
       <form className="vw-50 py-2 col-7">
@@ -48,7 +48,7 @@ export function Header() {
       </form>
       <div className="d-flex justify-content-end py-2 col-1 h-100">
 	<div role="button" className="p-0">
-	  <img className="m-0" src="/shopping-cart.svg" height="35" width="35" alt="shopping cart"/>
+	  <a href="/cart"><img className="m-0" src="/shopping-cart.svg" height="35" width="35" alt="shopping cart"/></a>
 	</div>
 	<div className="p-0 dropdown">
 	  <img src="/account.svg" data-bs-toggle="dropdown" role="button" className="dropdown-toggle" height="35" width="35" alt="account"/>

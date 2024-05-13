@@ -2,12 +2,11 @@ package edu.hcmut.bookstore.repository;
 
 import edu.hcmut.bookstore.business.*;
 import edu.hcmut.bookstore.db.DbManager;
+import edu.hcmut.bookstore.requestPayload.BookIdQuantityPair;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerRepository {
@@ -89,7 +88,9 @@ public class CustomerRepository {
             return;
         }
 
+        // transaction
         conn.setAutoCommit(false);
+
         int cartId = resultSet.getInt(1);
         try {
             var addOrderQuery = conn.prepareStatement("insert into cust_order (customer_id, payment_method, user_address, cart_id, phone_number) " +
@@ -164,6 +165,56 @@ public class CustomerRepository {
             updateQuantity.setInt(3, bookId);
             int rowAffected = updateQuantity.executeUpdate();
             if (rowAffected != 1) {
+                conn.rollback();
+                return false;
+            }
+        }
+
+        conn.commit();
+        return true;
+    }
+
+    public boolean updateCart(long customerId, BookIdQuantityPair payload) throws Exception {
+        var conn = DbManager.getMySqlDataSrc().getConnection();
+        conn.setAutoCommit(false);
+
+        var bookIds = payload.getBookIds();
+        var bookCounts = payload.getBookCounts();
+
+        if (bookIds.size() != bookCounts.size()) {
+            return false;
+        }
+
+        // Find user's cart id
+        var getCartIdQuery = conn.prepareStatement("select cart_id from customer where id = ?");
+        getCartIdQuery.setLong(1, customerId);
+        var res = getCartIdQuery.executeQuery();
+
+        if (!res.next()) {
+            return false;
+        }
+
+        var cartId = res.getInt("cart_id");
+
+        for (int i = 0; i < bookIds.size(); i++) {
+            var bookCount = bookCounts.get(i);
+            var bookId = bookIds.get(i);
+
+            try {
+                if (bookCount != 0) {
+                    var updateStmt = conn.prepareStatement("update cart_item set quantity = ? where book_id = ? and cart_id = ?");
+                    updateStmt.setInt(1, bookCount);
+                    updateStmt.setInt(2, bookId);
+                    updateStmt.setInt(3, cartId);
+                    updateStmt.executeUpdate();
+                } else {
+                    var deleteStmt = conn.prepareStatement("delete from cart_item where book_id = ? and cart_id = ?");
+                    deleteStmt.setInt(1, bookId);
+                    deleteStmt.setInt(2, cartId);
+                    deleteStmt.executeUpdate();
+                }
+            } catch (SQLException exception) {
+                exception.printStackTrace();
                 conn.rollback();
                 return false;
             }

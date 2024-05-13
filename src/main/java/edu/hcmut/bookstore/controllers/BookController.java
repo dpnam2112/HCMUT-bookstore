@@ -98,7 +98,6 @@ public class BookController {
         var bookRepo = new BookRepository();
         if (!bookRepo.updateBook(book)) {
             ctx.status(500);
-            return;
         }
     }
 
@@ -112,8 +111,8 @@ public class BookController {
         // path param: bookId
         var bookRepo = new BookRepository();
         var book = bookRepo.getBookById(Integer.parseInt(ctx.pathParam("bookId")));
-        var publisher = bookRepo.getPublisher(book.getId());
-        var author = bookRepo.getAuthor(book.getId());
+        var publisher = bookRepo.getPublisher(book.getPublisherId());
+        var author = bookRepo.getAuthor(book.getAuthorId());
         ctx.json(new BookDetail(book, publisher, author));
     }
 

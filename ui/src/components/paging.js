@@ -29,7 +29,7 @@ export function ProductList({ products }) {
 		    display.cur_page * display.per_page
 		)
 		.map((item, index) => (
-		    <div key={`product-${index}`} className="col mb-4">
+		    <a key={`product-${index}`} className="col mb-4" href={"/bookDetail?id=" + item.id}>
 			<div className="card h-100">
 			    <img src={item.bookCover} className="card-img-top" height="200px" alt="..." />
 			    <div className="card-body d-flex flex-column">
@@ -48,7 +48,7 @@ export function ProductList({ products }) {
 				</div>
 			    </div>
 			</div>
-		    </div>
+		    </a>
 		))}
 	</div>
       );

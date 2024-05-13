@@ -13,9 +13,6 @@ export function Modal({id, header, message }) {
 	  <div className="modal-body">
 	    { message }
 	  </div>
-	  <div className="modal-footer">
-	    <a href="/" className="btn btn-primary">Về trang chủ</a>
-	  </div>
 	</div>
       </div>
     </div>

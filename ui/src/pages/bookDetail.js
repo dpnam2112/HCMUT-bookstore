@@ -7,7 +7,6 @@ import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js';
 import { useQuery } from '../utils/query.js';
 
 export function ResultModal({id, header, message }) {
-
   return (
     <div className="modal fade" id={id} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered">
@@ -18,9 +17,6 @@ export function ResultModal({id, header, message }) {
 	  </div>
 	  <div className="modal-body">
 	    { message }
-	  </div>
-	  <div className="modal-footer">
-	    <a href="." className="btn btn-primary">OK</a>
 	  </div>
 	</div>
       </div>

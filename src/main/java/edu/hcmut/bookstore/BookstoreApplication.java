@@ -29,6 +29,7 @@ public class BookstoreApplication {
 				.post("/api/add-book", BookController::addBook)
 				.post("/api/update-book", BookController::updateBook)
 				.get("/api/cart", BookController::getBooksFromUserCart)
+				.post("/api/updateCart", CustomerController::updateUserCart)
 				.get("api/categories", BookController::getBookCategories)
 				.post("/api/new-author", BookController::newAuthor)
 				.post("/api/new-publisher", BookController::newPublisher);

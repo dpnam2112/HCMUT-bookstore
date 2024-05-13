@@ -114,7 +114,7 @@ public class BookRepository {
         }
     }
 
-    public List<Book> queryBooks(String name, ArrayList<Integer> categories, Long startIdx, int count) {
+    public List<Book> queryBooks(String name, ArrayList<Integer> categories, Long startIdx, int count) throws Exception {
         if (startIdx == null || startIdx < 0 || count < 1) {
             return null;
         }
@@ -122,62 +122,58 @@ public class BookRepository {
         var bookList = new ArrayList<Book>();
 
         var dataSrc = DbManager.getMySqlDataSrc();
-        try (var conn = dataSrc.getConnection()) {
-            PreparedStatement prepStmt;
-            if (categories == null) {
-                prepStmt = conn.prepareStatement(
-                        "select id, title, book_cover, price, remaining_quantity, author_id, publisher_id " +
-                                "from book " +
-                                "where title like ?" +
-                                "limit ?, ?");
+        var conn = dataSrc.getConnection();
+        PreparedStatement prepStmt;
+        if (categories == null) {
+            prepStmt = conn.prepareStatement(
+                    "select id, title, book_cover, price, remaining_quantity, author_id, publisher_id " +
+                            "from book " +
+                            "where title like ?" +
+                            "limit ?, ?");
 
-                name = "%" + name + "%";
-                prepStmt.setString(1, name);
-                prepStmt.setLong(2, startIdx);
-                prepStmt.setInt(3, count);
-            } else {
-                StringBuilder query = new StringBuilder(
-                        "select distinct book.id as id," +
-                        "book.title as title, " +
-                        "book.book_cover as book_cover, " +
-                        "book.price as price, " +
-                        "book.remaining_quantity as remaining_quantity " +
-                        "book.author_id as author_id " +
-                        "book.publisher_id as publisher_id" +
-                        "from book " +
-                        "join book_category on book.id = book_category.book_id " +
-                        "where title like ? ");
+            name = "%" + name + "%";
+            prepStmt.setString(1, name);
+            prepStmt.setLong(2, startIdx);
+            prepStmt.setInt(3, count);
+        } else {
+            StringBuilder query = new StringBuilder(
+                    "select distinct book.id as id, " +
+                    "book.title as title, " +
+                    "book.book_cover as book_cover, " +
+                    "book.price as price, " +
+                    "book.remaining_quantity as remaining_quantity, " +
+                    "book.author_id as author_id, " +
+                    "book.publisher_id as publisher_id " +
+                    "from book " +
+                    "join book_category on book.id = book_category.book_id " +
+                    "where title like ? ");
 
-                for (var catgId : categories) {
-                    query.append("and book_category.category_id = ").append(catgId).append(" ");
-                }
-
-                query.append("limit ?, ?");
-
-                prepStmt = conn.prepareStatement(query.toString());
-
-                name = "%" + name + "%";
-                prepStmt.setString(1, name);
-                prepStmt.setLong(2, startIdx);
-                prepStmt.setInt(3, count);
+            for (var catgId : categories) {
+                query.append("and book_category.category_id = ").append(catgId).append(" ");
             }
 
-            var resultSet = prepStmt.executeQuery();
-            while (resultSet.next()) {
-                var book = new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("title"),
-                        resultSet.getString("book_cover"),
-                        resultSet.getDouble("price"),
-                        resultSet.getInt("remaining_quantity"),
-                        resultSet.getInt("author_id"),
-                        resultSet.getInt("publisher_id")
-                );
-                bookList.add(book);
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+            query.append("limit ?, ?");
+
+            prepStmt = conn.prepareStatement(query.toString());
+
+            name = "%" + name + "%";
+            prepStmt.setString(1, name);
+            prepStmt.setLong(2, startIdx);
+            prepStmt.setInt(3, count);
+        }
+
+        var resultSet = prepStmt.executeQuery();
+        while (resultSet.next()) {
+            var book = new Book(
+                    resultSet.getInt("id"),
+                    resultSet.getString("title"),
+                    resultSet.getString("book_cover"),
+                    resultSet.getDouble("price"),
+                    resultSet.getInt("remaining_quantity"),
+                    resultSet.getInt("author_id"),
+                    resultSet.getInt("publisher_id")
+            );
+            bookList.add(book);
         }
 
         return bookList;
