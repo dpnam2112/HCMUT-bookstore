@@ -5,7 +5,8 @@ import { Footer } from '../components/footer';
 import { ProductList } from '../components/paging';
 import { useEffect, useState } from 'react';
 import { useQuery } from '../utils/query.js';
-
+import AddBookPage from './addBook.js';
+import { Link } from 'react-router-dom';
 
 function Breadcrumb() {
     return (
@@ -182,56 +183,58 @@ function Products() {
     let per_page = 12;
 
     if (page == null) {
-      page = 1;
+        page = 1;
     }
 
     let url = `http://localhost:8080/api/books?per_page=${per_page}&page=${page}`;
 
     if (categoriesParam != null) {
-      url += `&categories=${categoriesParam}`;
+        url += `&categories=${categoriesParam}`;
     }
 
     if (searchParam != null) {
-      url += `&name=${searchParam}`;
+        url += `&name=${searchParam}`;
     }
 
-    if (products.length == 0) {
-      fetch(url).then(response => response.json())
-	.then(products => {
-	  setProducts(products);
-	});
-    }
+    useEffect(() => {
+        fetch(url)
+            .then(response => response.json())
+            .then(products => setProducts(products));
+    }, [url]);
 
     return (
-        <div class = "container-xl">
-            <div class = "row">
+        <div className="container-xl">
+            <div className="row">
                 <div className="btn-aside d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">
                     <i className="fa-solid fa-bars"></i>
                 </div>
                 {/* aside */}
-                <aside class = "col-0 col-lg-3">
-                    <OffcanvasMenu/>
-                    <PublisherFilter/>
-                    <CategoryFilter/>
-                    <PriceFilter/>
+                <aside className="col-0 col-lg-3">
+                    <OffcanvasMenu />
+                    <PublisherFilter />
+                    <CategoryFilter />
+                    <PriceFilter />
                 </aside>
-                <div class = "col-12 col-lg-9">
-                    <hr/>
-		    <ProductList products={products}/>
+                <div className="col-12 col-lg-9">
+                    <hr />
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3>Danh sách sản phẩm</h3>
+                        <Link to="/addBook" className="btn btn-primary mb-3">Thêm sách mới</Link>
+                    </div>
+                    <ProductList products={products} />
                 </div>
             </div>
-        </div>  
-    )
+        </div>
+    );
 }
 
-
 export function ProductsPage() {
-  return (
-    <div className="vh-100">
-      <Header/>
-	<Breadcrumb/>
-        <Products/>
-      <Footer/>
-    </div>
-  );
+    return (
+        <div className="vh-100">
+            <Header />
+            <Breadcrumb />
+            <Products />
+            <Footer />
+        </div>
+    );
 }

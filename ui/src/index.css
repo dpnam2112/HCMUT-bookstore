@@ -185,3 +185,38 @@ code {
     border-radius: 20px;
     border: 1px solid #ccc;
 }
+.bg-header{
+    background-color: #85FFBD;
+    background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+
+}
+
+.component-sidebar{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.sidebar-item{
+    font-weight: 500;
+}
+.sidebar-item-child:hover{
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+.form-custom {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn {
+    width: 150px;
+}
+

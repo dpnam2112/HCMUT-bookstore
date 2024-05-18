@@ -1,6 +1,8 @@
 import React from "react"
 import { useState, useContext } from "react"
 import { UserContext } from "../context"
+import { Link, useNavigate } from 'react-router-dom';
+import '../index.css'
 
 export function UserNavigation() {
   const userInfo = useContext(UserContext);
@@ -31,30 +33,43 @@ export function Header() {
   }
 
   return (
-    <header className="container d-flex justify-content-between py-2">
-      <div className="d-flex py-1 justify-content-between">
-	<a href="/"><img alt="hcmut-logo" className="mx-2" src="/hcmut-logo.png" width="35" height="35"/></a>
-	<h4 className="py-1">HCMUT Bookstore</h4>
-      </div>
-      <form className="vw-50 py-2 col-7">
-	<div className="input-group input-group-sm">
-	  <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</button>
-	  <ul className="dropdown-menu">
-	    <li><a className="dropdown-item" href="/">Action</a></li>
-	  </ul>
-	  <input type="text" className="form-control input-sm" value={keyword} onChange={handleKeywordChange}/>
-	  <a href={`/products?per_page=12&page=1&name=${keyword}`} className="btn btn-primary">Search</a>
-	</div>
-      </form>
-      <div className="d-flex justify-content-end py-2 col-1 h-100">
-	<div role="button" className="p-0">
-	  <a href="/cart"><img className="m-0" src="/shopping-cart.svg" height="35" width="35" alt="shopping cart"/></a>
-	</div>
-	<div className="p-0 dropdown">
-	  <img src="/account.svg" data-bs-toggle="dropdown" role="button" className="dropdown-toggle" height="35" width="35" alt="account"/>
-	    <UserNavigation/>
-	</div>
-      </div>
-    </header>
+    <div className='component-sidebar'>
+              <nav className="navbar navbar-expand-lg container d-flex justify-content-between py-2 bg-header">
+                      <a href="/">
+                        <div className="d-flex py-1 justify-content-between" style={{ padding: '10px', cursor: 'pointer'}}>
+                           <img alt="hcmut-logo" className="mx-2" src="/hcmut-logo.png" width="35" height="35" />
+                           <h4 className="py-1">HCMUT Bookstore</h4>
+                        </div>
+                      </a>
+
+                <div className="container sidebar-item">
+                  <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                          <Link className="nav-link sidebar-item-child" to="/">Trang chủ</Link>
+                        </li>
+                      <li className="nav-item">
+                        <Link className="nav-link sidebar-item-child" to="/products">Sản phẩm</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link sidebar-item-child" to="/addBook">Thêm sách</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link sidebar-item-child" to="/modifyInfo">Cập nhật</Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-end py-2 col-1 h-100">
+    	<div role="button" className="p-0">
+    	  <a href="/cart"><img className="m-0" src="/shopping-cart.svg" height="35" width="35" alt="shopping cart"/></a>
+    	</div>
+    	<div className="p-0 dropdown">
+    	  <img src="/account.svg" data-bs-toggle="dropdown" role="button" className="dropdown-toggle" height="35" width="35" alt="account"/>
+    	    <UserNavigation/>
+    	</div>
+          </div>
+              </nav>
+            </div>
     )
 }
