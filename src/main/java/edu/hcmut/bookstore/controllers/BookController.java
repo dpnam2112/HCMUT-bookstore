@@ -116,5 +116,13 @@ public class BookController {
         ctx.json(new BookDetail(book, publisher, author));
     }
 
+    public static void getAuthors(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        ctx.json(bookRepo.getAllAuthors());
+    }
 
+    public  static void getPublishers(Context ctx) throws Exception {
+        var bookRepo = new BookRepository();
+        ctx.json(bookRepo.getAllPublishers());
+    }
 }

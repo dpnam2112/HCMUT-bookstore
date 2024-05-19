@@ -77,8 +77,8 @@ export function ProductList({ products }) {
                         </a>
                     </li>
                     {Array.from({ length: totalPage }, (_, index) => (
-                        <li key={index} className={`page-item ${curPage === index + 1 ? 'active' : ''}`}>
-                            <a className="page-link text-primary" href="#" onClick={() => changePage(index + 1)}>
+                        <li key={index}>
+                            <a className="page-link text-primary" href={ "/products?page=" + (index + 1) } onClick={() => changePage(index + 1)}>
                                 {index + 1}
                             </a>
                         </li>

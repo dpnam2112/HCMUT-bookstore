@@ -99,7 +99,8 @@ export const CartPage = () => {
 	))}
 
 	<div className="d-flex justify-content-center my-3">
-	  <button disabled={!quantityChanged} className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">Lưu giỏ hàng</button>
+	  <button disabled={!quantityChanged} className="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#confirmModal">Lưu giỏ hàng</button>
+	  <a className="btn btn-primary" href="/checkout">Thanh toán</a>
 	</div>
 
 	<div className="modal fade" id="confirmModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">

@@ -38,10 +38,10 @@ function ModifyInfo() {
 
         if (action === 'author') {
             url = 'http://localhost:8080/api/new-author';
-            payload = { id: parseInt(id), authorName: name };
+            payload = { id: -1, authorName: name };
         } else if (action === 'publisher') {
             url = 'http://localhost:8080/api/new-publisher';
-            payload = { id: parseInt(id), publisherName: name };
+            payload = { id: -1, publisherName: name };
         }
 
         console.log('Payload:', payload);
@@ -89,19 +89,7 @@ function ModifyInfo() {
                     </div>
                 ) : (
                     <form onSubmit={handleFormSubmit} className="form-custom mt-4">
-                        <div className="row mb-3">
-                            <div className="col-md-6">
-                                <label htmlFor="id" className="form-label">ID</label>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    id="id"
-                                    name="id"
-                                    value={id}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
+                        <div className="row mb-3 d-flex justify-content-center">
                             <div className="col-md-6">
                                 <label htmlFor="name" className="form-label">
                                     {action === 'author' ? 'Tên Tác Giả' : 'Tên Nhà Xuất Bản'}

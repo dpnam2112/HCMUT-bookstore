@@ -24,8 +24,8 @@ public class DbManager {
     public static DataSource getMySqlDataSrc() {
         var dataSrc = new MysqlDataSource();
         dataSrc.setUrl("jdbc:mysql://localhost:3306/bookstore");
-        dataSrc.setUser("root");
-        dataSrc.setPassword("");
+        dataSrc.setUser("nam");
+        dataSrc.setPassword("123");
         return dataSrc;
     }
 }

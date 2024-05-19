@@ -124,11 +124,11 @@ public class BookRepository {
         var dataSrc = DbManager.getMySqlDataSrc();
         var conn = dataSrc.getConnection();
         PreparedStatement prepStmt;
-        if (categories == null) {
+        if (categories.isEmpty()) {
             prepStmt = conn.prepareStatement(
                     "select id, title, book_cover, price, remaining_quantity, author_id, publisher_id " +
                             "from book " +
-                            "where title like ?" +
+                            "where title like ? " +
                             "limit ?, ?");
 
             name = "%" + name + "%";
@@ -321,5 +321,35 @@ public class BookRepository {
         var resSet = prepStmt.executeQuery();
         if (!resSet.next()) return null;
         return new Publisher(resSet.getInt("id"), resSet.getString("publisher_name"));
+    }
+
+    public List<Publisher> getAllPublishers() throws Exception {
+        var dataSrc = DbManager.getMySqlDataSrc();
+        var conn = dataSrc.getConnection();
+        var prepStmt = conn.prepareStatement(
+                "select id, publisher_name from publisher"
+        );
+        var resSet = prepStmt.executeQuery();
+        var publishers = new ArrayList<Publisher>();
+        while (resSet.next()) {
+            var publisher = new Publisher(resSet.getInt("id"), resSet.getString("publisher_name"));
+            publishers.add(publisher);
+        }
+        return publishers;
+    }
+
+    public List<Author> getAllAuthors() throws Exception {
+        var dataSrc = DbManager.getMySqlDataSrc();
+        var conn = dataSrc.getConnection();
+        var prepStmt = conn.prepareStatement(
+                "select id, author_name from author"
+        );
+        var resSet = prepStmt.executeQuery();
+        var authorList = new ArrayList<Author>();
+        while (resSet.next()) {
+            var author = new Author(resSet.getInt("id"), resSet.getString("author_name"));
+            authorList.add(author);
+        }
+        return authorList;
     }
 }

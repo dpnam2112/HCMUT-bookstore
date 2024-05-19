@@ -180,6 +180,7 @@ function Products() {
     let searchParam = query.get("name");
     let categoriesParam = query.get("categories");
     let page = query.get("page");
+
     let per_page = 12;
 
     if (page == null) {
@@ -211,8 +212,6 @@ function Products() {
                 {/* aside */}
                 <aside className="col-0 col-lg-3">
                     <OffcanvasMenu />
-                    <PublisherFilter />
-                    <CategoryFilter />
                     <PriceFilter />
                 </aside>
                 <div className="col-12 col-lg-9">

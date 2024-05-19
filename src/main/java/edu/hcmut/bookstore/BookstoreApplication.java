@@ -32,7 +32,9 @@ public class BookstoreApplication {
 				.post("/api/updateCart", CustomerController::updateUserCart)
 				.get("api/categories", BookController::getBookCategories)
 				.post("/api/new-author", BookController::newAuthor)
-				.post("/api/new-publisher", BookController::newPublisher);
+				.post("/api/new-publisher", BookController::newPublisher)
+				.get("/api/getAuthors", BookController::getAuthors)
+				.get("/api/getPublishers", BookController::getPublishers);
 
 
 		app.start(8080);
